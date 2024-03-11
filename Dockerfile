@@ -103,9 +103,9 @@ RUN --mount=type=bind,target=./pyproject.toml,src=./pyproject.toml \
     --mount=type=cache,target=/root/.cache/pip \
     --mount=type=cache,target=/root/.cache/pypoetry \
     python -m venv /ak-root/venv/ && \
-    /ak-root/venv/bin/pip3 install --upgrade pip && \
-    /ak-root/venv/bin/pip3 install poetry && \
-    /ak-root/venv/bin/poetry install --only=main --no-ansi --no-interaction
+    pip3 install --upgrade pip && \
+    pip3 install poetry && \
+    poetry install --only=main --no-ansi --no-interaction
 
 # Stage 6: Run
 FROM docker.io/python:3.11.5-slim-bookworm AS final-image
@@ -146,7 +146,7 @@ COPY ./manage.py /
 COPY ./blueprints /blueprints
 COPY ./lifecycle/ /lifecycle
 COPY --from=go-builder /go/authentik /bin/authentik
-COPY --from=python-deps /ak-root/venv /ak-root/venv
+COPY --from=python-deps /root/.cache/pypoetry/virtualenvs/authentik-Q7_ikXO9-py3.11/bin /ak-root/venv
 COPY --from=web-builder /work/web/dist/ /web/dist/
 COPY --from=web-builder /work/web/authentik/ /web/authentik/
 COPY --from=website-builder /work/website/help/ /website/help/
@@ -163,4 +163,4 @@ ENV TMPDIR=/dev/shm/ \
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 CMD [ "ak", "healthcheck" ]
 
-ENTRYPOINT [ "dumb-init", "--", "ak" ]
+ENTRYPOINT [ " /ak-root/venv/bin/dumb-init", "--", "ak" ]
