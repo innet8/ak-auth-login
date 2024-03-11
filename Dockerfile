@@ -163,5 +163,4 @@ ENV TMPDIR=/dev/shm/ \
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 CMD [ "ak", "healthcheck" ]
 
-# ENTRYPOINT [ "dumb-init", "--", "ak" ]
-ENTRYPOINT [ "/usr/local/bin/dumb-init", "--", "/lifecycle/ak" ]
+ENTRYPOINT [ "/ak-root/venv/bin/dumb-init", "--", "ak" ]
