@@ -103,9 +103,9 @@ RUN --mount=type=bind,target=./pyproject.toml,src=./pyproject.toml \
     --mount=type=cache,target=/root/.cache/pip \
     --mount=type=cache,target=/root/.cache/pypoetry \
     python -m venv /ak-root/venv/ && \
-    pip3 install --upgrade pip && \
-    pip3 install poetry && \
-    poetry install --only=main --no-ansi --no-interaction
+    /ak-root/venv/bin/pip3 install --upgrade pip && \
+    /ak-root/venv/bin/pip3 install poetry && \
+    /ak-root/venv/bin/poetry install --only=main --no-ansi --no-interaction
 
 # Stage 6: Run
 FROM docker.io/python:3.11.5-slim-bookworm AS final-image
@@ -163,4 +163,4 @@ ENV TMPDIR=/dev/shm/ \
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 CMD [ "ak", "healthcheck" ]
 
-ENTRYPOINT [ "/ak-root/venv/bin/dumb-init", "--", "ak" ]
+ENTRYPOINT [ "dumb-init", "--", "ak" ]
