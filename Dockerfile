@@ -125,6 +125,7 @@ WORKDIR /
 # We cannot cache this layer otherwise we'll end up with a bigger image
 RUN apt-get update && \
     # Required for runtime
+    apt-get install -y dumb-init && \
     apt-get install -y --no-install-recommends libpq5 openssl libxmlsec1-openssl libmaxminddb0 && \
     # Required for bootstrap & healtcheck
     apt-get install -y --no-install-recommends runit && \
