@@ -37,7 +37,7 @@ COPY ./website /work/website/
 RUN npm run build
 
 # Stage 3: Build go proxy
-FROM --platform=${BUILDPLATFORM} docker.io/golang:1.21.4-bookworm AS go-builder
+FROM --platform=${BUILDPLATFORM} docker.io/golang:1.22.1-bookworm AS go-builder
 
 ARG TARGETOS
 ARG TARGETARCH
