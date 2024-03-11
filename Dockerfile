@@ -105,7 +105,6 @@ RUN --mount=type=bind,target=./pyproject.toml,src=./pyproject.toml \
     python -m venv /ak-root/venv/ && \
     pip3 install --upgrade pip && \
     pip3 install poetry && \
-    pip3 install psycopg2-binary && \
     poetry install --only=main --no-ansi --no-interaction
 
 # Stage 6: Run
@@ -126,7 +125,6 @@ WORKDIR /
 # We cannot cache this layer otherwise we'll end up with a bigger image
 RUN apt-get update && \
     # Required for runtime
-    apt-get install -y dumb-init && \
     apt-get install -y --no-install-recommends libpq5 openssl libxmlsec1-openssl libmaxminddb0 && \
     # Required for bootstrap & healtcheck
     apt-get install -y --no-install-recommends runit && \
@@ -165,4 +163,5 @@ ENV TMPDIR=/dev/shm/ \
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 CMD [ "ak", "healthcheck" ]
 
-ENTRYPOINT [ "dumb-init", "--", "ak" ]
+# ENTRYPOINT [ "dumb-init", "--", "ak" ]
+ENTRYPOINT [ "/usr/local/bin/dumb-init", "--", "/lifecycle/ak" ]
