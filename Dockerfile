@@ -103,7 +103,7 @@ RUN --mount=type=bind,target=./pyproject.toml,src=./pyproject.toml \
     --mount=type=cache,target=/root/.cache/pip \
     --mount=type=cache,target=/root/.cache/pypoetry \
     python -m venv /ak-root/venv/ && \
-    source /ak-root/venv/bin/activate && \
+    /ak-root/venv/bin/activate && \
     poetry config virtualenvs.create false --local \
     pip3 install --upgrade pip && \
     pip3 install poetry && \
