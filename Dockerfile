@@ -104,9 +104,9 @@ RUN --mount=type=bind,target=./pyproject.toml,src=./pyproject.toml \
     --mount=type=cache,target=/root/.cache/pypoetry \
     python -m venv /ak-root/venv/ && \
     /bin/bash -c "source /ak-root/venv/bin/activate" && \
-    poetry config virtualenvs.create false --local &&\
     pip3 install --upgrade pip && \
     pip3 install poetry && \
+    poetry config virtualenvs.create false --local &&\
     poetry install --only=main --no-ansi --no-interaction
 
 # Stage 6: Run
