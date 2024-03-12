@@ -146,7 +146,7 @@ COPY ./manage.py /
 COPY ./blueprints /blueprints
 COPY ./lifecycle/ /lifecycle
 COPY --from=go-builder /go/authentik /bin/authentik
-COPY --from=python-deps /root/.cache/pypoetry/virtualenvs/authentik-Q7_ikXO9-py3.11/bin /ak-root/venv
+COPY --from=python-deps /ak-root/venv /ak-root/venv
 COPY --from=web-builder /work/web/dist/ /web/dist/
 COPY --from=web-builder /work/web/authentik/ /web/authentik/
 COPY --from=website-builder /work/website/help/ /website/help/
@@ -163,4 +163,4 @@ ENV TMPDIR=/dev/shm/ \
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 CMD [ "ak", "healthcheck" ]
 
-ENTRYPOINT [ " /ak-root/venv/bin/dumb-init", "--", "ak" ]
+ENTRYPOINT [ "/ak-root/venv/bin/dumb-init", "--", "ak" ]
