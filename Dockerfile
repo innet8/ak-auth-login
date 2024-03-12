@@ -152,6 +152,9 @@ COPY --from=web-builder /work/web/authentik/ /web/authentik/
 COPY --from=website-builder /work/website/help/ /website/help/
 COPY --from=geoip /usr/share/GeoIP /geoip
 
+RUN ls /ak-root/venv \
+    ls /ak-root/venv/bin
+
 USER 1000
 
 ENV TMPDIR=/dev/shm/ \
@@ -160,6 +163,9 @@ ENV TMPDIR=/dev/shm/ \
     PATH="/ak-root/venv/bin:/lifecycle:$PATH" \
     VENV_PATH="/ak-root/venv" \
     POETRY_VIRTUALENVS_CREATE=false
+
+RUN ls /ak-root/venv \
+    ls /ak-root/venv/bin
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 CMD [ "ak", "healthcheck" ]
 
