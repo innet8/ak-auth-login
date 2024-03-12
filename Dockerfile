@@ -103,6 +103,8 @@ RUN --mount=type=bind,target=./pyproject.toml,src=./pyproject.toml \
     --mount=type=cache,target=/root/.cache/pip \
     --mount=type=cache,target=/root/.cache/pypoetry \
     python -m venv /ak-root/venv/ && \
+    source /ak-root/venv/bin/activate && \
+    poetry config virtualenvs.create false --local \
     pip3 install --upgrade pip && \
     pip3 install poetry && \
     poetry install --only=main --no-ansi --no-interaction
@@ -152,8 +154,7 @@ COPY --from=web-builder /work/web/authentik/ /web/authentik/
 COPY --from=website-builder /work/website/help/ /website/help/
 COPY --from=geoip /usr/share/GeoIP /geoip
 
-RUN ls /ak-root/venv \
-    ls /ak-root/venv/bin
+RUN ls /ak-root/venv/bin
 
 USER 1000
 
@@ -164,8 +165,7 @@ ENV TMPDIR=/dev/shm/ \
     VENV_PATH="/ak-root/venv" \
     POETRY_VIRTUALENVS_CREATE=false
 
-RUN ls /ak-root/venv \
-    ls /ak-root/venv/bin
+RUN ls /ak-root/venv/bin
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 CMD [ "ak", "healthcheck" ]
 
